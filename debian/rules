@@ -1,0 +1,62 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+PYVERS	:= $(shell pyversions -vr debian/control)
+DEB_UPSTREAM_VERSION := $(shell dpkg-parsechangelog \
+                         | grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
+PYMOD	= pexpect
+d	= debian/python-pexpect
+
+build: $(PYVERS:%=build-python%)
+	touch $@
+
+build-python%:
+	dh_testdir
+	python$* setup.py build
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp build-python*
+	rm -rf build dist
+	rm -f *.pyc 
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) -f debian/rules $(PYVERS:%=install-python%)
+
+install-python%:
+	python$* setup.py install --no-compile --root=$(d)
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_installchangelogs -i
+	dh_link -i
+	dh_pycentral -i
+	dh_python -i
+	echo python:Provides=$(foreach pv,$(shell pyversions -s),$(pv)-pexpect)|sed 's/ /, /g' >> debian/python-pexpect.substvars
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	# nothing to do
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

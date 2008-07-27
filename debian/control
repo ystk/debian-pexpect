@@ -1,0 +1,23 @@
+Source: pexpect
+Section: python
+Priority: optional
+Build-Depends-Indep: python-all-dev (>= 2.3.5-10), python-central (>= 0.4.17)
+Build-Depends: debhelper (>= 5.0.37.1)
+XS-Python-Version: all
+Maintainer: Ganesan Rajagopal <rganesan@debian.org>
+Uploaders: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Standards-Version: 3.8.0
+
+Package: python-pexpect
+Architecture: all
+Depends: ${python:Depends}
+Provides: ${python:Provides}
+Conflicts: python2.3-pexpect, python2.4-pexpect
+Replaces: python2.3-pexpect, python2.4-pexpect
+XB-Python-Version: ${python:Versions}
+Description: Python module for automating interactive applications
+ Pexpect is a pure Python module for spawning child applications;
+ controlling them; and responding to expected patterns in their
+ output. Pexpect works like Don Libes' Expect. Pexpect allows your
+ script to spawn a child application and control it as if a human were
+ typing commands.  
