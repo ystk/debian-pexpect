@@ -4,7 +4,7 @@ $Date: 2007-07-12 15:23:15 -0700 (Thu, 12 Jul 2007) $
 '''
 from distutils.core import setup
 setup (name='pexpect',
-    version='2.3',
+    version='2.4',
     py_modules=['pexpect', 'pxssh', 'fdpexpect', 'FSM', 'screen', 'ANSI'],
     description='Pexpect is a pure Python Expect. It allows easy control of other applications.',
     author='Noah Spurrier',

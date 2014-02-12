@@ -1,7 +1,7 @@
 """This class extends pexpect.spawn to specialize setting up SSH connections.
 This adds methods for login, logout, and expecting the shell prompt.
 
-$Id: pxssh.py 487 2007-08-29 22:33:29Z noah $
+$Id: pxssh.py 513 2008-02-09 18:26:13Z noah $
 """
 
 from pexpect import *
@@ -120,18 +120,22 @@ class pxssh (spawn):
                 current[j] = min(add, delete, change)
         return current[n]
 
-    def synch_original_prompt (self):
+    def sync_original_prompt (self):
 
         """This attempts to find the prompt. Basically, press enter and record
         the response; press enter again and record the response; if the two
-        responses are similar then assume we are at the original prompt. """
+        responses are similar then assume we are at the original prompt. This
+        is a slow function. It can take over 10 seconds. """
 
         # All of these timing pace values are magic.
         # I came up with these based on what seemed reliable for
         # connecting to a heavily loaded machine I have.
         # If latency is worse than these values then this will fail.
 
-        self.read_nonblocking(size=10000,timeout=1) # GAS: Clear out the cache before getting the prompt
+        try:
+            self.read_nonblocking(size=10000,timeout=1) # GAS: Clear out the cache before getting the prompt
+        except TIMEOUT:
+            pass
         time.sleep(0.1)
         self.sendline()
         time.sleep(0.5)
@@ -240,7 +244,7 @@ class pxssh (spawn):
         else: # Unexpected 
             self.close()
             raise ExceptionPxssh ('unexpected login response')
-        if not self.synch_original_prompt():
+        if not self.sync_original_prompt():
             self.close()
             raise ExceptionPxssh ('could not synchronize with original prompt')
         # We appear to be in.
