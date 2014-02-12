@@ -1,3 +1,34 @@
+pexpect (2.4-1) unstable; urgency=low
+
+  * Team upload.
+
+  [ Arthur de Jong ]
+  * New upstream release (Closes: #609195).
+  * Switch to 3.0 (quilt) source format.
+  * Switch to dh-style debian/rules.
+  * Moved packaging from python-central to dh_python2 (Closes: #616935,
+    LP: #788514).
+  * Drop Conflicts/Replaces on ancient versions which shipped in sarge.
+  * Bump standards-version to 3.9.3.
+  * Register documentation with doc-base.
+  * Update debian/copyright (license is actually MIT instead of Python 2.3).
+  * Fix syntax errors in one of the examples (closes: #580271)
+
+  [ Piotr Ożarowski ]
+  * Added Vcs-Svn and Vcs-Browser fields
+
+  [ Sandro Tosi ]
+  * debian/control
+    - uniforming Vcs-Browser field
+  * debian/control
+    - switch Vcs-Browser field to viewsvn
+
+  [ Carlos Galisteo ]
+  * debian/control
+    - Added Homepage field.
+
+ -- Arthur de Jong <adejong@debian.org>  Fri, 09 Mar 2012 11:43:41 +0100
+
 pexpect (2.3-1) unstable; urgency=low
 
   * New upstream release.
@@ -91,5 +122,3 @@ pexpect (0.98-1) unstable; urgency=low
   * Initial packaging (Closes: #156784).
 
  -- Ganesan Rajagopal <rganesan@debian.org>  Wed, 13 Aug 2003 18:25:51 +0530
-
-

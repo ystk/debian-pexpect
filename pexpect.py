@@ -33,9 +33,10 @@ the normal stdio streams.
 Credits: Noah Spurrier, Richard Holden, Marco Molteni, Kimberley Burchett,
 Robert Stone, Hartmut Goebel, Chad Schroeder, Erick Tryzelaar, Dave Kirby, Ids
 vander Molen, George Todd, Noel Taylor, Nicolas D. Cesar, Alexander Gattin,
-Geoffrey Marshall, Francisco Lourenco, Glen Mabey, Karthik Gurusamy, Fernando
-Perez, Corey Minyard, Jon Cohen, Guillaume Chazarain, Andrew Ryan, Nick
-Craig-Wood, Andrew Stone, Jorgen Grahn (Let me know if I forgot anyone.)
+Jacques-Etienne Baudoux, Geoffrey Marshall, Francisco Lourenco, Glen Mabey,
+Karthik Gurusamy, Fernando Perez, Corey Minyard, Jon Cohen, Guillaume
+Chazarain, Andrew Ryan, Nick Craig-Wood, Andrew Stone, Jorgen Grahn, John
+Spiegel, Jan Grant (Let me know if I forgot anyone.)
 
 Free, open source, and all that good stuff.
 
@@ -60,7 +61,7 @@ SOFTWARE.
 Pexpect Copyright (c) 2008 Noah Spurrier
 http://pexpect.sourceforge.net/
 
-$Id: pexpect.py 507 2007-12-27 02:40:52Z noah $
+$Id: pexpect.py 516 2008-05-23 20:46:01Z noah $
 """
 
 try:
@@ -84,8 +85,8 @@ except ImportError, e:
 A critical module was not found. Probably this operating system does not
 support it. Pexpect is intended for UNIX-like operating systems.""")
 
-__version__ = '2.3'
-__revision__ = '$Revision: 399 $'
+__version__ = '2.4'
+__revision__ = '$Revision: 516 $'
 __all__ = ['ExceptionPexpect', 'EOF', 'TIMEOUT', 'spawn', 'run', 'which',
     'split_command_line', '__version__', '__revision__']
 
@@ -443,7 +444,7 @@ class spawn (object):
             # -- Fernando Perez
             try:
                 self.close()
-            except AttributeError:
+            except:
                 pass
 
     def __str__(self):
@@ -612,9 +613,13 @@ class spawn (object):
         child_name = os.ttyname(tty_fd)
 
         # Disconnect from controlling tty if still connected.
-        fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY);
-        if fd >= 0:
-            os.close(fd)
+        try:
+            fd = os.open("/dev/tty", os.O_RDWR | os.O_NOCTTY);
+            if fd >= 0:
+                os.close(fd)
+        except:
+            # We are already disconnected. Perhaps we are running inside cron.
+            pass
 
         os.setsid()
 
@@ -1230,7 +1235,7 @@ class spawn (object):
 
         return compiled_pattern_list
 
-    def expect(self, pattern, timeout = -1, searchwindowsize=None):
+    def expect(self, pattern, timeout = -1, searchwindowsize=-1):
 
         """This seeks through the stream until a pattern is matched. The
         pattern is overloaded and may take several types. The pattern can be a
