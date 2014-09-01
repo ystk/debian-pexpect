@@ -1,4 +1,25 @@
 #!/usr/bin/make -f
+PYTHON2_VERSIONS=$(shell pyversions -vr)
+PYTHON3_VERSIONS=$(shell py3versions -vr)
+PYTHON_VERSIONS=${PYTHON2_VERSIONS} ${PYTHON3_VERSIONS}
 
 %:
-	dh $@ --with python2
+	dh $@ --with python2,python3,sphinxdoc --buildsystem=pybuild
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf doc/_build
+	rm -rf .coverage
+	rm -rf tests/log
+
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+test-python%:
+	PYTHON=python$* sh debian/run_tests.sh
+
+override_dh_auto_test: $(foreach pyversion,${PYTHON_VERSIONS},$(pyversion:%=test-python%))
+endif
+
+override_dh_installdocs:
+	PYTHONPATH=`pwd` make -C doc html
+	dh_installdocs -ppython-pexpect-doc doc/_build/html
+	dh_installdocs -A

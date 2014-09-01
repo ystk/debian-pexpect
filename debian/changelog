@@ -1,3 +1,54 @@
+pexpect (3.2-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+  * d/control: Add explicit dh-python Build-Depends.  (Closes: 744300)
+
+ -- Barry Warsaw <barry@debian.org>  Thu, 08 May 2014 16:05:58 -0400
+
+pexpect (3.1-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release
+  * debian/control: 
+    - In -doc, add breaks/replaces on python-pexcept <<3. Closes: #732915
+    - Drop python-pexcept-doc to Suggests in both other packages. 
+      Closes: #732889
+    - Bump standards-version to 3.9.5 (no changes)
+
+ -- Jackson Doak <noskcaj@ubuntu.com>  Sun, 26 Jan 2014 11:22:03 +1100
+
+pexpect (3.0-2) unstable; urgency=low
+
+  * Team upload.
+  * debian/copyright: Update to reflect upstreams change
+    from Expat to ISC (Closes: #731945). 
+
+ -- Andrew Starr-Bochicchio <asb@debian.org>  Thu, 12 Dec 2013 16:53:35 -0500
+
+pexpect (3.0-1) unstable; urgency=low
+
+  * Team upload.
+
+  [ Thomas Kluyver ]
+  * New upstream release. Closes: #729518
+  * Add packaging for Python 3.
+  * Use pybuild for packaging.
+
+  [ Jakub Wilk ]
+  * Use canonical URIs for Vcs-* fields.
+
+  [ Jackson Doak ]
+  * Create debian/python3-pexpect.docs
+
+  [ Andrew Starr-Bochicchio ]
+  * Remove empty debian/patches dir.
+  * Move documentation and examples into a new python-pexpect-doc
+    package. They are shared between the Python 2 and Python 3 packages,
+    so there is no need to install them with both.
+
+ -- Andrew Starr-Bochicchio <asb@debian.org>  Fri, 06 Dec 2013 20:20:26 -0500
+
 pexpect (2.4-1) unstable; urgency=low
 
   * Team upload.
